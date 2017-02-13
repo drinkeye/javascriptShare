@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>珠峰培训</title>
+</head>
+<body>
+<div>0</div>
+<input type="button" value="支持"/>
+
+<div>0</div>
+<input type="button" value="支持"/>
+
+<div>0</div>
+<input type="button" value="支持"/>
+
+<script src="ES6.js"></script>
+<script>
+    /*var oBox = document.getElementById('box');
+     console.dir(oBox);
+
+     /!*Object
+     EventTarget.prototype = new Object();
+     Node.prototype = new EventTarget();*!/*/
+</script>
+
+<script>
+    /*var submit = document.getElementById('submit'),
+     oBox = document.getElementById('box');
+     var n = 0;
+     submit.onclick = function () {
+     oBox.innerHTML = ++n;
+     }*/
+
+    //    var submitList = document.getElementsByTagName('input'),
+    //            divList = document.getElementsByTagName('div');
+    //    for (var i = 0; i < submitList.length; i++) {
+    //        submitList[i].onclick = (function (n) {
+    //            return function () {
+    //                divList[n].innerHTML++;
+    //            }
+    //        })(i)
+    //    }
+    //    for (var i = 0; i < submitList.length; i++) {
+    //        submitList[i].onclick = function () {
+    //            console.log(i);
+    //            //divList[i].innerHTML++;
+    //        }
+    //    }
+
+    //->异步编程：所有的事件绑定都是异步编程的，我们绑定一个事件，它并没有立马执行而是需要等到循环结束后才会执行
+
+    //->ES6
+    let submitList = document.getElementsByTagName('input'),
+            divList = document.getElementsByTagName('div');
+    for (let i = 0; i < submitList.length; i++) {
+        submitList[i].onclick = function () {
+            divList[i].innerHTML++;
+        }
+    }
+</script>
+
+
+</body>
+</html>
