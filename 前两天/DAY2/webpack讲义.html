@@ -1,0 +1,211 @@
+<!DOCTYPE html><html><head><title>webpack</title><meta charset='utf-8'><link href='https://dn-maxiang.qbox.me/res-min/themes/marxico.css' rel='stylesheet'><style></style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+
+
+<h3 id="webpack">webpack</h3>
+
+<p>webpack是一款强大的模块加载器兼打包工具,是目前市场上最常用的构建自动化平台的工具之一，它能把各种资源，例如：JS（含JSX）、样式（含less/sass）、图片等进行合并压缩和打包，最后把所有的资源都汇总到HTML页面中。</p>
+
+
+
+<h4 id="1基础使用">1、基础使用</h4>
+
+<blockquote>
+  <p>首先在全局下安装webpack，体验一下它的命令操作</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs mel">npm install webpack -g<br><span class="hljs-comment">//-&gt;安装完成后，我们可以查看到webpack的安装目录：C:\Users\team\AppData\Roaming\npm，我们找到webpack.cmd文件</span><br><br><span class="hljs-variable">@IF</span> EXIST <span class="hljs-string">"%~dp0\node.exe"</span> (<br>  <span class="hljs-string">"%~dp0\node.exe"</span>  <span class="hljs-string">"%~dp0\node_modules\webpack\bin\webpack.js"</span> <span class="hljs-variable">%*</span><br>) ELSE (<br>  <span class="hljs-variable">@SETLOCAL</span><br>  <span class="hljs-variable">@SET</span> PATHEXT=<span class="hljs-variable">%PATHEXT</span>:;.JS;=;%<br>  node  <span class="hljs-string">"%~dp0\node_modules\webpack\bin\webpack.js"</span> <span class="hljs-variable">%*</span><br>)<br><span class="hljs-comment">//-&gt;dp0是当前目录，当我们执行webpack命令的时候，执行的都是webpack.js这个文件，所有安装在全局下的模块都是这样的机制和原理</span><br></code></pre>
+
+<blockquote>
+  <p>语法命令：webpack xxx/xxx.js  xxx/xxx.js  把某一个目录下的文件打包到另外一个文件夹中</p>
+  
+  <ul><li>一般原代码文件都存放在 src 文件夹中</li>
+  <li>一般编打包后的文件都存在 build 文件夹中</li>
+  </ul>
+  
+  <p>更多的命令： “webpack -h”</p>
+  
+  <ul><li>webpack -p 生产环境下编译，会压缩生成后的文件</li>
+  <li>webpack -w 开发环境下持续的监听文件变动来进行编译</li>
+  <li>webpack -d 生成map映射文件,会在控制台的Sources页签中出现存放打包前原始文件的webpack://目录，可以打断点，帮助调试</li>
+  <li>webpack –progress 显示构建百分比进度</li>
+  <li>webpack –display-error-details 显示打包过程中的出错信息(比如 webpack寻找模块的过程)</li>
+  <li>webpack –profile 输出性能数据，可以看到每一步的耗时</li>
+  </ul>
+</blockquote>
+
+
+
+<h4 id="2在本地项目中使用">2、在本地项目中使用</h4>
+
+<blockquote>
+  <p>首先在本地项目中安装：npm install webpack@1.14.0 –save-dev</p>
+  
+  <p>npm view webpack &gt; version.webpack 查看webpack的版本号</p>
+  
+  <p>其次在当前项目的根目录下创建:   webpack.config.js  文件，填写如下的内容</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs typescript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);<br><span class="hljs-module"><span class="hljs-keyword">module</span>.exports = </span>{<br>    <span class="hljs-comment">//-&gt;设置入口文件的绝对路径</span><br>    entry: path.resolve(<span class="hljs-string">'src/index.js'</span>),<br>    <span class="hljs-comment">//-&gt;设置输出文件的目录和名称</span><br>    output: {<br>        path: path.resolve(<span class="hljs-string">'build'</span>),<br>        filename: <span class="hljs-string">'index.js'</span><br>    }<br>};<br></code></pre>
+
+<blockquote>
+  <p>在本地项目的 package.json 文件中配置命令行执行</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs clojure"><span class="hljs-collection">{<br>  ...<br>  <span class="hljs-string">"scripts"</span>: <span class="hljs-collection">{<br>    <span class="hljs-string">"build"</span>: <span class="hljs-string">"webpack"</span><br>  }</span><br>  ...<br>}</span><br></code></pre>
+
+<blockquote>
+  <p>这样以后在命令行执行：npm run build  就可以完成webpack打包操作了</p>
+</blockquote>
+
+
+
+<h4 id="3devserver">3、devServer</h4>
+
+<blockquote>
+  <p>webpack-dev-server 是一个Web服务器，可以预览项目，并且当修改源码后可以实时刷新页面</p>
+  
+  <p>npm install webpack-dev-server@1.16.2 –save-dev</p>
+  
+  <p>在 package.json 中配置新的执行命令：</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs xquery"><span class="hljs-string">"scripts"</span>: {<br>    <span class="hljs-string">"dev"</span>: <span class="hljs-string">"webpack-dev-server"</span><br>}<br></code></pre>
+
+<blockquote>
+  <p>执行 npm run dev，当服务创建成功后，我们在浏览器输入：<a href="http://localhost:8080" target="_blank">http://localhost:8080</a>  就可以看到我们的项目目录了</p>
+</blockquote>
+
+
+
+<h5 id="指定webpack-dev-server的配置项">指定webpack-dev-server的配置项</h5>
+
+<blockquote>
+  <p>在 webpack.config.js 中配置如下信息</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs lasso">module<span class="hljs-built_in">.</span>exports = {<br>    <span class="hljs-attribute">...</span><br>    <span class="hljs-comment">//-&gt;指定webpack-dev-server的配置项</span><br>    devServer: {<br>        port: <span class="hljs-number">9090</span>,<span class="hljs-comment">//-&gt;设置创建服务的端口号</span><br>        contentBase: <span class="hljs-string">'./build'</span>,<span class="hljs-comment">//-&gt;配置部署项目文件的根目录</span><br>        <span class="hljs-keyword">inline</span>:<span class="hljs-literal">true</span> <span class="hljs-comment">//-&gt;设置自动刷新</span><br>    },<br>    <span class="hljs-attribute">...</span><br>};<br></code></pre>
+
+<blockquote>
+  <p>如何自动打开浏览器：这个需要我们给 webpack 配置插件 <br>
+  1.安装插件</p>
+  
+  <p>npm install open-browser-webpack-plugin –save-dev</p>
+  
+  <p>2.在 webpack.config.js 中配置如下信息</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs typescript"><span class="hljs-keyword">var</span> openBrowserWebpackPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">'open-browser-webpack-plugin'</span>);<br><span class="hljs-module"><span class="hljs-keyword">module</span>.exports = </span>{<br>    ...,<br>    <span class="hljs-comment">//-&gt;配置插件</span><br>    plugins: [<br>        <span class="hljs-keyword">new</span> openBrowserWebpackPlugin({url: <span class="hljs-string">'http://localhost:9090'</span>})<br>    ]<br>}<br></code></pre>
+
+
+
+<h4 id="4loader-加载器">4、loader 加载器</h4>
+
+<blockquote>
+  <p>之前我们讲解过ES6的语法，但是我们也提到了，在IE的低版本浏览器或者其它环境中是不支持的，我们需要使用babel进行编译，大概步骤如下：</p>
+  
+  <ol><li rel="1"><p>npm install babel-cli babel-preset-es2015 babel-preset-es2016  –save-dev</p></li>
+  <li rel="2"><p>创建 .babelrc 文件，在文件中配置</p></li>
+  </ol>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs prolog">//-&gt;.<span class="hljs-atom">babelrc</span><br>{<br>  <span class="hljs-string">"presets"</span>: [<br>    <span class="hljs-string">"es2015"</span>,<br>    <span class="hljs-string">"es2016"</span><br>  ],<br>  <span class="hljs-string">"plugins"</span>: []<br>}<br></code></pre>
+
+<blockquote>
+  <p>3.按照相同的方式，在 package.json 文件中配置执行的命令，然后使用npm run xxx 执行</p>
+</blockquote>
+
+<p><font color="red">那么问题来了!</font></p>
+
+<blockquote>
+  <p>我们想要的肯定是，以后执行执行 webpack 这个命令，那么ES6转成ES5，然后再进行打包部署，这套流程应该是一体的，不应该在单独的执行两次命令才可以啊，所以我们需要用到了 webpack 中的加载器 loader</p>
+</blockquote>
+
+
+
+<h5 id="配置babel加载器解析js">配置babel加载器解析JS</h5>
+
+<blockquote>
+  <p>安装LOADER：</p>
+  
+  <p>npm install babel-loader babel-core –save-dev</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs typescript"><span class="hljs-comment">//-&gt;webpack.config.js</span><br><span class="hljs-module"><span class="hljs-keyword">module</span>.exports = </span>{<br>    entry: ...,<br>    output: {...},<br>    <span class="hljs-comment">//-&gt;定义了对模块的处理逻辑</span><br>    <span class="hljs-module"><span class="hljs-keyword">module</span>: </span>{<br>        <span class="hljs-comment">//-&gt;定义了一系列的加载器(Array)</span><br>        loaders: [<br>            {<br>                test: <span class="hljs-regexp">/\.js$/</span>,<span class="hljs-comment">//-&gt;正则匹配使用当前加载器的文件类型</span><br>                loader: <span class="hljs-string">'babel-loader'</span><span class="hljs-comment">//-&gt;设置加载器，loader可以省略不写，也就是写'babel'</span><br>            }<br>        ]<br>    }<br>};<br></code></pre>
+
+
+
+<h5 id="配置样式文件cssless的加载器">配置样式文件(css/less)的加载器</h5>
+
+<blockquote>
+  <p>需要安装的加载器： <br>
+  npm install less style-loader css-loader less-loader –save-dev</p>
+  
+  <ul><li>less-loader负责把less源码转成css代码</li>
+  <li>css-loader负责读取css代码</li>
+  <li>style-loader负责在css代码转变成style标签并作为页内样式插入到页面中去</li>
+  </ul>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs typescript"><span class="hljs-module"><span class="hljs-keyword">module</span>: </span>{<br>    <span class="hljs-comment">//-&gt;定义了一系列的加载器(Array)</span><br>    loaders: [<br>        {<br>            test: <span class="hljs-regexp">/\.(less|css)$/i</span>,<br>            loader: <span class="hljs-string">'style!css!less'</span><span class="hljs-comment">//-&gt;多个加载器之间用!隔开</span><br>        }<br>    ]<br>}<br></code></pre>
+
+
+
+<h5 id="配置图片资源加载器">配置图片资源加载器</h5>
+
+<blockquote>
+  <p>npm install file-loader url-loader –save-dev</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs gherkin">{<br>    test: /\.(woff|<span class="hljs-string">woff2</span>|<span class="hljs-string">ttf</span>|<span class="hljs-string">svg</span>|<span class="hljs-string">eot</span>|<span class="hljs-string">jpg</span>|<span class="hljs-string">png)$/i,<br>    loader: "url?limit=8192" //-&gt;“?limit=8192”表示将所有小于8kb的图片都转为base64形式(其实应该说超过8kb的才使用url-loader来映射到文件，否则转为dataUrl形式)<br>}</span><br></code></pre>
+
+
+
+<h4 id="5自动产出html">5、自动产出HTML</h4>
+
+<blockquote>
+  <p>npm install html-webpack-plugin –save-dev</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs javascript"><span class="hljs-keyword">var</span> HtmlWebpackPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">'html-webpack-plugin'</span>);<br>plugins: [<br>      <span class="hljs-keyword">new</span> HtmlWebpackPlugin({<br>           title: <span class="hljs-string">'zhufeng-react'</span>,<span class="hljs-comment">//-&gt;标题</span><br>           template: <span class="hljs-string">'./src/index.html'</span>, <span class="hljs-comment">//-&gt;模板文件</span><br>           filename:<span class="hljs-string">'./build/index.html'</span> <span class="hljs-comment">//-&gt;产出后的文件名称</span><br>     })<br>]<br></code></pre>
+
+
+
+<h4 id="6区分环境">6、区分环境</h4>
+
+<blockquote>
+  <p>package.json</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs xquery"><span class="hljs-string">"scripts"</span>: {<br>    <span class="hljs-string">"publish-dev"</span>: <span class="hljs-string">"set BUILD_ENV=dev &amp;&amp; webpack-dev-server"</span>,<br>    <span class="hljs-string">"publish-prod"</span>: <span class="hljs-string">"set BUILD_ENV=prod &amp;&amp; webpack-dev-server"</span><br>}<br></code></pre>
+
+<blockquote>
+  <p>webpack.config.js</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs lasso"><span class="hljs-built_in">var</span> webpack = <span class="hljs-keyword">require</span>(<span class="hljs-string">'webpack'</span>);<br><span class="hljs-built_in">var</span> definePlugin = <span class="hljs-literal">new</span> webpack<span class="hljs-built_in">.</span>DefinePlugin({<br>     __DEV__: (process<span class="hljs-built_in">.</span>env<span class="hljs-built_in">.</span>BUILD_DEV<span class="hljs-subst">||</span><span class="hljs-string">'dev'</span>)<span class="hljs-built_in">.</span>trim() == <span class="hljs-string">'dev'</span><br>});<br><br>plugins: <span class="hljs-preprocessor">[</span><br>    definePlugin,<br>    <span class="hljs-attribute">...</span><br><span class="hljs-preprocessor">]</span><span class="hljs-markup"></span><br></code></pre>
+
+<blockquote>
+  <p>后期执行 npm run publish-dev 就是设置在开发环境下执行</p>
+</blockquote>
+
+
+
+<h4 id="7css文件单独加载">7、css文件单独加载</h4>
+
+<blockquote>
+  <p>npm install extract-text-webpack-plugin –save-dev</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs typescript"><span class="hljs-keyword">var</span> ExtractTextPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">"extract-text-webpack-plugin"</span>);<br><br><span class="hljs-comment">//-&gt;配置文件中修改</span><br><span class="hljs-module"><span class="hljs-keyword">module</span>: </span>{<br>    loaders: [<br>        {<br>            test: <span class="hljs-regexp">/\.less$/i</span>,<br>            loader: ExtractTextPlugin.extract(<span class="hljs-string">"style-loader"</span><br>                , <span class="hljs-string">"css-loader!less-loader"</span>)<br>        },<br>        {<br>            test: <span class="hljs-regexp">/\.css$/i</span>,<br>            loader: ExtractTextPlugin.extract(<span class="hljs-string">"style-loader"</span><br>                , <span class="hljs-string">"css-loader"</span>)<br>        }<br>    ]<br>},<br>plugins: [<br>    definePlugin,<br>    <span class="hljs-keyword">new</span> ExtractTextPlugin(<span class="hljs-string">"index.css"</span>),<br>    ...<br>]<br></code></pre>
+
+
+
+<h4 id="8资源压缩">8、资源压缩</h4>
+
+<pre class="prettyprint hljs-dark"><code class="hljs livecodeserver">plugins: [<br>    ...<br>    <span class="hljs-built_in">new</span> webpack.optimize.UglifyJsPlugin({<br>        <span class="hljs-built_in">compress</span>: {<br>            warnings: <span class="hljs-constant">false</span><br>        }<br>    }),<br>    <span class="hljs-built_in">new</span> webpack.optimize.MinChunkSizePlugin({<br>        <span class="hljs-built_in">compress</span>: {<br>            warnings: <span class="hljs-constant">false</span><br>        }<br>    }),<br>   <span class="hljs-comment"> //-&gt;查找相等或近似的模块，避免在最终生成的文件中出现重复的模块</span><br>    <span class="hljs-built_in">new</span> webpack.optimize.DedupePlugin(),<br>   <span class="hljs-comment"> //-&gt;按引用频度来排序ID,以便达到减少文件大小的效果</span><br>    <span class="hljs-built_in">new</span> webpack.optimize.OccurenceOrderPlugin(),<br>    <span class="hljs-built_in">new</span> webpack.optimize.AggressiveMergingPlugin({<br>        minSizeReduce: <span class="hljs-number">1.5</span>,<br>        moveToParents: <span class="hljs-constant">true</span><br>    })<br>]<br></code></pre>
+
+<p>详细文档： <br>
+<a href="http://www.zhufengpeixun.cn/doc/html/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/webpack.html" target="_blank">http://www.zhufengpeixun.cn/doc/html/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/webpack.html</a></p></div></body></html>
